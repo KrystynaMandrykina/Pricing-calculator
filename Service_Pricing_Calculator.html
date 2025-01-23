@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Pricing Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .container h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Service Pricing Calculator</h1>
+        <label for="deliveryHours">Delivery Hours:</label>
+        <input type="number" id="deliveryHours" placeholder="Hours spent delivering the service" required>
+
+        <label for="prepHours">Preparation Hours:</label>
+        <input type="number" id="prepHours" placeholder="Hours spent preparing the service" required>
+
+        <label for="hourlyRate">Your Hourly Rate ($):</label>
+        <input type="number" id="hourlyRate" placeholder="Your hourly rate" required>
+
+        <label for="clientIncome">Client's Current Income ($):</label>
+        <input type="number" id="clientIncome" placeholder="Current income of your client" required>
+
+        <label for="incomeGrowthMin">Minimum Expected Growth (%):</label>
+        <input type="number" id="incomeGrowthMin" placeholder="Min % growth in client's income" required>
+
+        <label for="incomeGrowthMax">Maximum Expected Growth (%):</label>
+        <input type="number" id="incomeGrowthMax" placeholder="Max % growth in client's income" required>
+
+        <label for="timeSaved">Time Saved for Client (hours):</label>
+        <input type="number" id="timeSaved" placeholder="Time saved for the client" required>
+
+        <label for="clientHourlyRate">Client's Hourly Rate ($):</label>
+        <input type="number" id="clientHourlyRate" placeholder="Client's hourly rate" required>
+
+        <label for="markup">Desired Markup (%):</label>
+        <input type="number" id="markup" placeholder="Your markup percentage" required>
+
+        <button class="btn" onclick="calculatePrice()">Calculate Price</button>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculatePrice() {
+            const deliveryHours = parseFloat(document.getElementById('deliveryHours').value);
+            const prepHours = parseFloat(document.getElementById('prepHours').value);
+            const hourlyRate = parseFloat(document.getElementById('hourlyRate').value);
+            const clientIncome = parseFloat(document.getElementById('clientIncome').value);
+            const incomeGrowthMin = parseFloat(document.getElementById('incomeGrowthMin').value) / 100;
+            const incomeGrowthMax = parseFloat(document.getElementById('incomeGrowthMax').value) / 100;
+            const timeSaved = parseFloat(document.getElementById('timeSaved').value);
+            const clientHourlyRate = parseFloat(document.getElementById('clientHourlyRate').value);
+            const markup = parseFloat(document.getElementById('markup').value) / 100;
+
+            // Calculate base cost
+            const baseCost = (deliveryHours + prepHours) * hourlyRate;
+
+            // Calculate client value
+            const minValue = (clientIncome * incomeGrowthMin) + (timeSaved * clientHourlyRate);
+            const maxValue = (clientIncome * incomeGrowthMax) + (timeSaved * clientHourlyRate);
+
+            // Add markup
+            const minPrice = baseCost + minValue + (baseCost * markup);
+            const maxPrice = baseCost + maxValue + (baseCost * markup);
+
+            // Display result
+            document.getElementById('result').innerText = `Suggested Price Range: $${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
